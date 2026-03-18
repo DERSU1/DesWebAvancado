@@ -40,8 +40,52 @@ function soma(a, b){
     return a+b;
 }
 
-console.log(soma(2,8));
-console.log(soma("iua"+8));
-console.log(
-    
-)
+
+
+
+const usuarios = [
+  { nome: "Ana", idade: 20, ativo: true, compras: [100, 50, 25] },
+  { nome: "Bruno", idade: 17, ativo: false, compras: [30, 20] },
+  { nome: "Carlos", idade: 32, ativo: true, compras: [200, 150, 50, 100] },
+  { nome: "Diana", idade: 25, ativo: true, compras: [] },
+  { nome: "Eduardo", idade: 15, ativo: false, compras: [10] }
+];
+
+// Parte 1
+usuarios.forEach(u => {
+  const total = u.compras.reduce((acc, curr) => acc + curr, 0);
+  console.log(`${u.nome}: total = ${total}`);
+});
+
+// Parte 2
+const ativos = usuarios.filter(u => u.ativo);
+ativos.forEach(u => console.log(u.nome));
+
+// Parte 3
+const maiores = usuarios.filter(u => u.idade >= 18);
+
+// Parte 4
+const totais = usuarios.map(u => ({
+  nome: u.nome,
+  total: u.compras.reduce((acc, curr) => acc + curr, 0)
+}));
+const maiorVolume = totais.reduce((prev, curr) => (prev.total > curr.total) ? prev : curr);
+console.log(`Usuário com maior volume: ${maiorVolume.nome}\nTotal: ${maiorVolume.total}`);
+
+// Parte 7
+const gerarRelatorio = (dados) => {
+  const totais = dados.map(u => ({
+    nome: u.nome,
+    total: u.compras.reduce((acc, curr) => acc + curr, 0)
+  }));
+
+  return {
+    totalUsuarios: dados.length,
+    usuariosAtivos: dados.filter(u => u.ativo).length,
+    usuariosInativos: dados.filter(u => !u.ativo).length,
+    mediaIdade: dados.reduce((acc, u) => acc + u.idade, 0) / dados.length,
+    maiorComprador: totais.reduce((p, c) => (p.total > c.total) ? p : c).nome
+  };
+};
+
+console.log(gerarRelatorio(usuarios));
